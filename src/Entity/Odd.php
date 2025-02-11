@@ -21,7 +21,7 @@ class Odd
     #[ORM\Column(length: 100)]
     private ?string $outcome = null;
 
-    #[ORM\Column(type: Types::DECIMAL, precision: 6, scale: 2, nullable: true)]
+    #[ORM\Column(type: Types::DECIMAL, precision: 6, scale: 2)]
     private ?string $value = null;
 
     #[ORM\Column]
@@ -61,7 +61,7 @@ class Odd
         return $this->value;
     }
 
-    public function setValue(?string $value): static
+    public function setValue(string $value): static
     {
         $this->value = $value;
 

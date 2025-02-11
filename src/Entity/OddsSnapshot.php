@@ -17,10 +17,7 @@ class OddsSnapshot
 
     #[ORM\ManyToOne(inversedBy: 'oddsSnapshots')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Event $event = null;
-
-    #[ORM\Column]
-    private ?\DateTimeImmutable $snapshot_date = null;
+    private ?EventBookmaker $event_bookmaker = null;
 
     #[ORM\Column(length: 50)]
     private ?string $market = null;
@@ -44,26 +41,14 @@ class OddsSnapshot
         return $this->id;
     }
 
-    public function getEvent(): ?Event
+    public function getEventBookmaker(): ?EventBookmaker
     {
-        return $this->event;
+        return $this->event_bookmaker;
     }
 
-    public function setEvent(?Event $event): static
+    public function setEventBookmaker(?EventBookmaker $event_bookmaker): static
     {
-        $this->event = $event;
-
-        return $this;
-    }
-
-    public function getSnapshotDate(): ?\DateTimeImmutable
-    {
-        return $this->snapshot_date;
-    }
-
-    public function setSnapshotDate(\DateTimeImmutable $snapshot_date): static
-    {
-        $this->snapshot_date = $snapshot_date;
+        $this->event_bookmaker = $event_bookmaker;
 
         return $this;
     }

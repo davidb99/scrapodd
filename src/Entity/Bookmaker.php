@@ -24,21 +24,15 @@ class Bookmaker
     #[ORM\Column(length: 255)]
     private ?string $website = null;
 
-    #[ORM\Column]
-    private ?\DateTimeImmutable $created_at = null;
-
-    #[ORM\Column(nullable: true)]
-    private ?\DateTimeImmutable $updated_at = null;
-
     /**
-     * @var Collection<int, Event>
+     * @var Collection<int, CompetitionBookmaker>
      */
-    #[ORM\OneToMany(targetEntity: Event::class, mappedBy: 'bookmaker')]
-    private Collection $events;
+    #[ORM\OneToMany(targetEntity: CompetitionBookmaker::class, mappedBy: 'bookmaker')]
+    private Collection $competitionBookmakers;
 
     public function __construct()
     {
-        $this->events = new ArrayCollection();
+        $this->competitionBookmakers = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -82,54 +76,30 @@ class Bookmaker
         return $this;
     }
 
-    public function getCreatedAt(): ?\DateTimeImmutable
-    {
-        return $this->created_at;
-    }
-
-    public function setCreatedAt(\DateTimeImmutable $created_at): static
-    {
-        $this->created_at = $created_at;
-
-        return $this;
-    }
-
-    public function getUpdatedAt(): ?\DateTimeImmutable
-    {
-        return $this->updated_at;
-    }
-
-    public function setUpdatedAt(?\DateTimeImmutable $updated_at): static
-    {
-        $this->updated_at = $updated_at;
-
-        return $this;
-    }
-
     /**
-     * @return Collection<int, Event>
+     * @return Collection<int, CompetitionBookmaker>
      */
-    public function getEvents(): Collection
+    public function getCompetitionBookmakers(): Collection
     {
-        return $this->events;
+        return $this->competitionBookmakers;
     }
 
-    public function addEvent(Event $event): static
+    public function addCompetitionBookmaker(CompetitionBookmaker $competitionBookmaker): static
     {
-        if (!$this->events->contains($event)) {
-            $this->events->add($event);
-            $event->setBookmaker($this);
+        if (!$this->competitionBookmakers->contains($competitionBookmaker)) {
+            $this->competitionBookmakers->add($competitionBookmaker);
+            $competitionBookmaker->setBookmaker($this);
         }
 
         return $this;
     }
 
-    public function removeEvent(Event $event): static
+    public function removeCompetitionBookmaker(CompetitionBookmaker $competitionBookmaker): static
     {
-        if ($this->events->removeElement($event)) {
+        if ($this->competitionBookmakers->removeElement($competitionBookmaker)) {
             // set the owning side to null (unless already changed)
-            if ($event->getBookmaker() === $this) {
-                $event->setBookmaker(null);
+            if ($competitionBookmaker->getBookmaker() === $this) {
+                $competitionBookmaker->setBookmaker(null);
             }
         }
 

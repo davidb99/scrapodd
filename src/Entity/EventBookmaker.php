@@ -2,29 +2,25 @@
 
 namespace App\Entity;
 
-use App\Repository\EventRepository;
+use App\Repository\EventBookmakerRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: EventRepository::class)]
-class Event
+#[ORM\Entity(repositoryClass: EventBookmakerRepository::class)]
+class EventBookmaker
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\ManyToOne(inversedBy: 'events')]
+    #[ORM\ManyToOne(inversedBy: 'eventBookmakers')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Bookmaker $bookmaker = null;
+    private ?CompetitionBookmaker $competition_bookmaker = null;
 
     #[ORM\Column(length: 50)]
     private ?string $bookmaker_event_id = null;
-
-    #[ORM\ManyToOne(targetEntity: Competition::class)]
-    #[ORM\JoinColumn(nullable: false)]
-    private Competition $competition;
 
     #[ORM\Column]
     private ?\DateTimeImmutable $date = null;
@@ -47,7 +43,7 @@ class Event
     /**
      * @var Collection<int, OddsSnapshot>
      */
-    #[ORM\OneToMany(targetEntity: OddsSnapshot::class, mappedBy: 'event')]
+    #[ORM\OneToMany(targetEntity: OddsSnapshot::class, mappedBy: 'event_bookmaker')]
     private Collection $oddsSnapshots;
 
     public function __construct()
@@ -60,14 +56,14 @@ class Event
         return $this->id;
     }
 
-    public function getBookmaker(): ?Bookmaker
+    public function getCompetitionBookmaker(): ?CompetitionBookmaker
     {
-        return $this->bookmaker;
+        return $this->competition_bookmaker;
     }
 
-    public function setBookmaker(?Bookmaker $bookmaker): static
+    public function setCompetitionBookmaker(?CompetitionBookmaker $competition_bookmaker): static
     {
-        $this->bookmaker = $bookmaker;
+        $this->competition_bookmaker = $competition_bookmaker;
 
         return $this;
     }
@@ -81,17 +77,6 @@ class Event
     {
         $this->bookmaker_event_id = $bookmaker_event_id;
 
-        return $this;
-    }
-
-    public function getCompetition(): Competition
-    {
-        return $this->competition;
-    }
-
-    public function setCompetition(Competition $competition): self
-    {
-        $this->competition = $competition;
         return $this;
     }
 
@@ -179,7 +164,7 @@ class Event
     {
         if (!$this->oddsSnapshots->contains($oddsSnapshot)) {
             $this->oddsSnapshots->add($oddsSnapshot);
-            $oddsSnapshot->setEvent($this);
+            $oddsSnapshot->setEventBookmaker($this);
         }
 
         return $this;
@@ -189,8 +174,8 @@ class Event
     {
         if ($this->oddsSnapshots->removeElement($oddsSnapshot)) {
             // set the owning side to null (unless already changed)
-            if ($oddsSnapshot->getEvent() === $this) {
-                $oddsSnapshot->setEvent(null);
+            if ($oddsSnapshot->getEventBookmaker() === $this) {
+                $oddsSnapshot->setEventBookmaker(null);
             }
         }
 
