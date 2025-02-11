@@ -22,11 +22,9 @@ class Event
     #[ORM\Column(length: 50)]
     private ?string $bookmaker_event_id = null;
 
-    #[ORM\Column(length: 50)]
-    private ?string $sport = null;
-
-    #[ORM\Column(length: 100)]
-    private ?string $competition = null;
+    #[ORM\ManyToOne(targetEntity: Competition::class)]
+    #[ORM\JoinColumn(nullable: false)]
+    private Competition $competition;
 
     #[ORM\Column]
     private ?\DateTimeImmutable $date = null;
@@ -86,27 +84,14 @@ class Event
         return $this;
     }
 
-    public function getSport(): ?string
-    {
-        return $this->sport;
-    }
-
-    public function setSport(string $sport): static
-    {
-        $this->sport = $sport;
-
-        return $this;
-    }
-
-    public function getCompetition(): ?string
+    public function getCompetition(): Competition
     {
         return $this->competition;
     }
 
-    public function setCompetition(string $competition): static
+    public function setCompetition(Competition $competition): self
     {
         $this->competition = $competition;
-
         return $this;
     }
 
