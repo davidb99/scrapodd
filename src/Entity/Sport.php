@@ -24,6 +24,9 @@ class Sport
     #[ORM\OneToMany(targetEntity: Competition::class, mappedBy: 'sport')]
     private Collection $competitions;
 
+    #[ORM\Column(length: 50)]
+    private ?string $slug = null;
+
     public function __construct()
     {
         $this->competitions = new ArrayCollection();
@@ -72,6 +75,18 @@ class Sport
                 $competition->setSport(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(string $slug): static
+    {
+        $this->slug = $slug;
 
         return $this;
     }
