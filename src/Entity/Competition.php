@@ -28,6 +28,12 @@ class Competition
     #[ORM\OneToMany(targetEntity: CompetitionBookmaker::class, mappedBy: 'competition')]
     private Collection $competitionBookmakers;
 
+    #[ORM\Column(length: 50)]
+    private ?string $slug = null;
+
+    #[ORM\Column]
+    private ?int $csv_id = null;
+
     public function __construct()
     {
         $this->competitionBookmakers = new ArrayCollection();
@@ -88,6 +94,30 @@ class Competition
                 $competitionBookmaker->setCompetition(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(string $slug): static
+    {
+        $this->slug = $slug;
+
+        return $this;
+    }
+
+    public function getCsvId(): ?int
+    {
+        return $this->csv_id;
+    }
+
+    public function setCsvId(int $csv_id): static
+    {
+        $this->csv_id = $csv_id;
 
         return $this;
     }

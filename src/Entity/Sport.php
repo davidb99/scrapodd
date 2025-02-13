@@ -27,6 +27,9 @@ class Sport
     #[ORM\Column(length: 50)]
     private ?string $slug = null;
 
+    #[ORM\Column]
+    private ?int $csv_id = null;
+
     public function __construct()
     {
         $this->competitions = new ArrayCollection();
@@ -87,6 +90,18 @@ class Sport
     public function setSlug(string $slug): static
     {
         $this->slug = $slug;
+
+        return $this;
+    }
+
+    public function getCsvId(): ?int
+    {
+        return $this->csv_id;
+    }
+
+    public function setCsvId(int $csv_id): static
+    {
+        $this->csv_id = $csv_id;
 
         return $this;
     }
