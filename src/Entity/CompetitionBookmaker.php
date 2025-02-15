@@ -38,6 +38,9 @@ class CompetitionBookmaker
     #[ORM\OneToMany(targetEntity: EventBookmaker::class, mappedBy: 'competition_bookmaker')]
     private Collection $eventBookmakers;
 
+    #[ORM\Column]
+    private ?int $csv_id = null;
+
     public function __construct()
     {
         $this->eventBookmakers = new ArrayCollection();
@@ -134,6 +137,18 @@ class CompetitionBookmaker
                 $eventBookmaker->setCompetitionBookmaker(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getCsvId(): ?int
+    {
+        return $this->csv_id;
+    }
+
+    public function setCsvId(int $csv_id): static
+    {
+        $this->csv_id = $csv_id;
 
         return $this;
     }
