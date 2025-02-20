@@ -97,12 +97,18 @@ class BetclicOddsFetcher
         // On utilise le tag personnalisé 'sports-events-event'
         $crawler->filter('sports-events-event-card')->each(function(Crawler $eventNode) use (&$eventsData) {
 
+            dump($eventNode);
+
             // On récupère l'URL de l'événement via le lien (balise <a> avec classe "cardEvent")
             $linkNodes = $eventNode->filter('a.cardEvent');
             if (!$linkNodes->count()) {
                 return;
             }
             $eventUrl = $linkNodes->first()->attr('href');
+
+            // On récupère le statut en examinant l'attribut class
+            $classAttr = $linkNodes->first()->attr('class');
+            $isLive = strpos($classAttr, 'is-live') !== false;
 
             // Extraction de l'identifiant de l'événement depuis l'URL (si elle se termine par "-m<id>")
             $eventId = null;
@@ -152,12 +158,13 @@ class BetclicOddsFetcher
             });
 
             $eventsData[] = [
-                'event_id'     => $eventId,
-                'url'          => $eventUrl,
-                'event_date'   => $eventDate,
+                'event_id' => $eventId,
+                'url' => $eventUrl,
+                'event_date' => $eventDate,
                 'participant1' => $participant1,
                 'participant2' => $participant2,
-                'odds'         => $odds,
+                'odds' => $odds,
+                'is_live' => $isLive,
             ];
         });
 
